@@ -1,0 +1,1 @@
+strophe/plugins/strophe.flxhr.js

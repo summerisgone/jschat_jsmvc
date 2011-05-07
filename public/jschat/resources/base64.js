@@ -1,0 +1,1 @@
+strophe/src/base64.js

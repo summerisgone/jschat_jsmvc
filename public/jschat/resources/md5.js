@@ -1,0 +1,1 @@
+strophe/src/md5.js

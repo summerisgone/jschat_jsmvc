@@ -8,7 +8,13 @@ steal.plugins(
 	'jquery/dom/form_params')		// form data helper
 .models('message')
 .controllers('chat')
-.resources('strophe')
+.resources(
+	'strophe',
+	'base64',
+	'md5'
+//	'flXHR.js',
+//	'strophe.flxhr.js'
+)
 .views(
 	'//jschat/views/chat/init.ejs',
 	'//jschat/views/chat/list.ejs',
@@ -16,7 +22,7 @@ steal.plugins(
 )
 .then(function($){
 		$('body').append('<div id="chat"/>');
-		$('#chat').jschat_chat({list: new Jschat.Models.Message.List()});
+		$('#chat').jschat_chat();
 
 //		new Jschat.Models.Message({mesage: 'New one'}).save();
 });

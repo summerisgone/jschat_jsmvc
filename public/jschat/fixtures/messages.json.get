@@ -1,0 +1,7 @@
+[
+	{"direction": "incoming","from": "service1@ha.com", "to": "me@ha.com", "message": "Привет, чем могу помочь?", "id": 1, "dt": "2011-01-01"},
+	{"direction": "outgoing", "from": "me@ha.com", "to": "service1@ha.com", "message": "Какие методы оплаты поддержваются?", "id": 2, "dt": "2011-01-01"},
+	{"direction": "incoming", "from": "service1@ha.com", "to": "me@ha.com", "message": "Пока только вебмани", "id": 2, "dt": "2011-01-01"},
+	{"direction": "outgoing", "from": "me@ha.com", "to": "service1@ha.com", "message": "Ясно, спасибо", "id": 3, "dt": "2011-01-01"},
+	{"direction": "incoming", "from": "service1@ha.com", "to": "me@ha.com", "message": "Обращайтесь!", "id": 4, "dt": "2011-01-01"},
+]

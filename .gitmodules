@@ -1,0 +1,6 @@
+[submodule "public/steal"]
+	path = public/steal
+	url = git://github.com/jupiterjs/steal.git
+[submodule "public/jquery"]
+	path = public/jquery
+	url = git://github.com/jupiterjs/jquerymx.git

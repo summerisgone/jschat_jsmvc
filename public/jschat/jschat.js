@@ -8,6 +8,7 @@ steal.plugins(
 	'jquery/dom/form_params')		// form data helper
 .models('message')
 .controllers('chat')
+.resources('strophe')
 .views(
 	'//jschat/views/chat/init.ejs',
 	'//jschat/views/chat/list.ejs',

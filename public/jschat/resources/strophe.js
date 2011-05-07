@@ -1,0 +1,1 @@
+strophe/src/core.js

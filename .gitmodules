@@ -4,3 +4,6 @@
 [submodule "public/jquery"]
 	path = public/jquery
 	url = git://github.com/jupiterjs/jquerymx.git
+[submodule "public/strophe"]
+	path = public/strophe
+	url = git://github.com/metajack/strophejs.git

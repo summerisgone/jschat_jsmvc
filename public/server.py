@@ -47,6 +47,7 @@ class SymlinksHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
                     f = open(linkto, 'rb')
                 else:
                     self.send_error(404, "Symlink not found")
+                    return None
             else:
                 self.send_error(404, "File not found")
                 return None

@@ -40,4 +40,25 @@ The controller will create html widget with all messages loaded from fixture.
 	
 This code will add ``<li>`` element to the widget.
 
-I think enough documentation for now, let's write some code! :) 
+4. XMPP connection stored in controller object. It can be retrieved from DOM element
+with ``.controller()`` method: ::
+
+	$('#chat').controller().connection
+
+5. Application use `CORS`_ cross-domain technology to access jabber http-bind server.
+If CORS not supported, connection established via `flXHR`_ Flash tool.
+
+Libraries and technologies
+---------------------------
+
+As said, user interface and application design made with `JavascirptMVC framework`_.
+
+XMPP connection based on `Strophe.js`_ library.
+
+Cross-domain requests in old browsers made via `flXHR`_.   
+
+
+.. _JavascirptMVC framework: http://javascriptmvc.com/
+.. _CORS: http://www.w3.org/TR/cors/
+.. _flXHR: http://flxhr.flensed.com/
+.. _Strophe.js: http://strophe.im/

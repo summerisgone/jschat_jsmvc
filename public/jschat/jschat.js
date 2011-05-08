@@ -6,7 +6,10 @@ steal.plugins(
 	'jquery/model',					// Ajax wrappers
 	'jquery/model/list',			// List helpers
 	'jquery/dom/form_params')		// form data helper
-.models('message')
+.models(
+	'message',
+	'rosteritem'
+)
 .controllers('chat')
 .resources(
 	'strophe',
@@ -26,7 +29,6 @@ steal.plugins(
 
 	// wrap CORS browser support
 	if ('withCredentials' in new XMLHttpRequest()){
-		alert('CORS enabled');
 		init($);
 	} else {
 		steal.resources('strophe.flxhr.js').then(function($){

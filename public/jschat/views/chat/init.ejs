@@ -2,7 +2,13 @@
 	<div class="window-header">Chat window</div>
 	<div class="history">
 		<ul>
-		<%= $.View('//jschat/views/chat/list',{messages: list})%>
+		<%= $.View('//jschat/views/chat/list',{messages: messages})%>
 		</ul>
+	</div>
+	<div class="message">
+	   <form action="" method="post">
+	       <textarea name="text">Type your message here</textarea>
+	       <input type="submit" />
+	   </form>
 	</div>
 </div>

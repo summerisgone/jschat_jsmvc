@@ -1,3 +1,3 @@
 <%for(var i = 0; i < messages.length ; i++){%>
-	<%= $.View('//jschat/views/chat/show',messages[i])%>
+	<%= $.View('//jschat/views/chat/show',{message: messages[i]})%>
 <%}%>

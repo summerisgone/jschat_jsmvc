@@ -12,8 +12,6 @@ steal.plugins(
 	'strophe',
 	'base64',
 	'md5'
-//	'flXHR.js',
-//	'strophe.flxhr.js'
 )
 .views(
 	'//jschat/views/chat/init.ejs',
@@ -21,8 +19,19 @@ steal.plugins(
 	'//jschat/views/chat/show.ejs'
 )
 .then(function($){
+	var init = function($){
 		$('body').append('<div id="chat"/>');
 		$('#chat').jschat_chat();
+	};
 
+	// wrap CORS browser support
+	if ('withCredentials' in new XMLHttpRequest()){
+		alert('CORS enabled');
+		init($);
+	} else {
+		steal.resources('strophe.flxhr.js').then(function($){
+			init($);	
+		});
+	}
 //		new Jschat.Models.Message({mesage: 'New one'}).save();
 });

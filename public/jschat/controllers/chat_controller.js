@@ -21,21 +21,17 @@ $.Controller('Jschat.Controllers.Chat',
 		// fills this list of items (creates add events on the list)
 		this.options.list.findAll({}, this.callback('list'));
 		this.connection = new Strophe.Connection(this.options.bosh_service);
-		
-		console.log('Connecting with', this.options.jid, this.options.password);
-		$.when(
-			this.connection.connect(this.options.jid, this.options.pass, this.onConnect)
-		).done(function(){
-			console.log('Connection.connect worked!', this.connection);
-		});
+		this.connection.connect(this.options.jid, this.options.password, this.callback('onConnect'));
 	},
 	onConnect: function(status_code, error){
-		console.log('on connect!', status_code, error);
 		for (status in Strophe.Status) {
 			if (status_code === Strophe.Status[status])
-				console.log('status: ', status);
+				steal.dev.log('status: ' + status);
 		}
-		
+		if (status_code === Strophe.Status.CONNECTED) {
+			alert('connected!');
+			this.connection.disconnect();
+		}
 	},
 	list: function(messages){
 		this.element.html(this.view('init', this.options));

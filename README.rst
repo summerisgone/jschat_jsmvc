@@ -1,7 +1,7 @@
 Javascript web chat application
 ================================
 
-Yep, wet another...
+Yep, yet another...
 
 Quick start
 -----------

@@ -23,21 +23,29 @@ $.Controller('Jschat.Controllers.Chat',
 		// fills this list of items (creates add events on the list)
 		this.options.messages.findAll({}, this.callback('list'));
 		this.connection = new Strophe.Connection(this.options.bosh_service);
-		this.connection.connect(this.options.jid, this.options.password, this.callback('onConnect'));
+		this.connection.connect(this.options.jid, this.options.password, this.callback('onConnectChange'));
+		this.connection.rawInput = function(data){console.log('IN:', $(data));}
+		this.connection.rawOutput = function(data){console.log('OUT:', $(data));}
+		this.bind('connected', 'onConnect');
 	},
-	onConnect: function(status_code, error){
+	onConnectChange: function(status_code, error){
 		for (status in Strophe.Status) {
 			if (status_code === Strophe.Status[status])
 				steal.dev.log('status: ' + status);
 		}
 		if (status_code === Strophe.Status.CONNECTED) {
-			// request roster
-			var iq = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
-			this.connection.sendIQ(iq, this.callback('onRoster'));
-//			this.connection.disconnect();
+			this.element.trigger('connected');
 		}
-//		this.connection.addHandler(this.callback('onPresence'), null, 'presence');
-		this.connection.addHandler(this.callback('OnMessage'), null, 'message');
+	},
+	onConnect: function(){
+		steal.dev.log('on connect');
+		// 'connected' event listener
+		// request roster
+		var iq = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
+		this.connection.sendIQ(iq, this.callback('onRoster'));
+		// add handlers
+		this.connection.addHandler(this.callback('onPresence'), null, 'presence');
+		this.connection.addHandler(this.callback('OnMessage'), null, 'message', 'chat');
 	},
 	onRoster: function(iq){
 		var Rosteritem = Jschat.Models.Rosteritem;  // shortcut
@@ -47,14 +55,16 @@ $.Controller('Jschat.Controllers.Chat',
 		this.connection.send($pres());
 	},
 	onPresence: function(){
-		// empty for now
-		this.connection.disconnect();
+		steal.dev.log('On presence');
+//		this.connection.disconnect();
 	},
 	OnMessage: function(message){
+		steal.dev.log('On message');
 		var Message = Jschat.Models.Message, // shortcut
 			message = new Message(Message.fromIQ(message));
 		message.myjid = this.options.jid;
 		message.save();
+		return true;
 	},
 	list: function(messages){
 		this.element.html(this.view('init', this.options));
@@ -64,8 +74,6 @@ $.Controller('Jschat.Controllers.Chat',
 	},
 	'rosteritem.created subscribe': function(called, roster_item){
 		this.options.roster.push(roster_item);
-		steal.dev.log('new roster item added');
-		steal.dev.log(roster_item);
 	},
 	'{messages} add': function(list, ev, new_messages){
 		this.element.find('.history ul').append(this.view('list', {messages: new_messages}));

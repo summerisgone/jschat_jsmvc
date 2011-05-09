@@ -22,9 +22,9 @@ $.Model('Jschat.Models.Message',
 	 */
 	fromIQ: function(message){
 		return {
-			text: $(message).find('body').text(),
-			from: $(message).attr('from'),
-			to: $(message).attr('to'),
+			text: $(message).text(),
+			from: Strophe.getBareJidFromJid($(message).attr('from')),
+			to: Strophe.getBareJidFromJid($(message).attr('to')),
 			dt: new Date()
 		}
 	}

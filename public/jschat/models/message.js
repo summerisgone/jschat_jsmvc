@@ -39,6 +39,13 @@ $.Model('Jschat.Models.Message',
 		} else {
 			return 'incoming';
 		}
+	},
+	send: function(connection, to){
+		connection.send($msg({
+			to: this.to,
+			"type": 'chat'
+		}).c('body').t(this.text));
+		return this
 	}
 });
 

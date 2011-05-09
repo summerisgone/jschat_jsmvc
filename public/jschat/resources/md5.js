@@ -1,1 +1,1 @@
-strophe/src/md5.js
+../../strophe/src/md5.js

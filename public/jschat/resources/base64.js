@@ -1,1 +1,1 @@
-strophe/src/base64.js
+../../strophe/src/base64.js

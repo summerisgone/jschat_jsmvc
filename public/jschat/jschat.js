@@ -14,7 +14,11 @@ steal.plugins(
 .resources(
 	'strophe',
 	'base64',
-	'md5'
+	'md5',
+	'flXHR',
+	'checkplayer',
+	'swfobject',
+	'flensed'
 )
 .views(
 	'//jschat/views/chat/init.ejs',

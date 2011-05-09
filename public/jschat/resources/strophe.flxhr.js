@@ -1,1 +1,1 @@
-strophe/plugins/strophe.flxhr.js
+../../strophe/plugins/strophe.flxhr.js

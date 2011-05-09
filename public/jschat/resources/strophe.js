@@ -1,1 +1,1 @@
-strophe/src/core.js
+../../strophe/src/core.js

@@ -40,12 +40,12 @@ $.Model('Jschat.Models.Message',
 			return 'incoming';
 		}
 	},
-	send: function(connection, to){
+	send: function(connection){
 		connection.send($msg({
 			to: this.to,
 			"type": 'chat'
 		}).c('body').t(this.text));
-		return this
+		return this;
 	}
 });
 

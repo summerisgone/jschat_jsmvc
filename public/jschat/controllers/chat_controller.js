@@ -66,6 +66,16 @@ $.Controller('Jschat.Controllers.Chat',
 		message.save();
 		return true;
 	},
+	'form submit': function(el, ev){
+		ev.preventDefault();
+		// TODO: get appripriate contact, not first one
+		var to = this.options.roster[0],
+			msg = new Jschat.Models.Message({
+				'to': to.jid,
+				'text': el.formParams().text
+			});
+		msg.send(this.connection).save();
+	},
 	list: function(messages){
 		this.element.html(this.view('init', this.options));
 	},

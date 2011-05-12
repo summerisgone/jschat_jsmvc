@@ -3,5 +3,5 @@
 	{"direction": "outgoing", "from": "me@ha.com", "to": "service1@ha.com", "text": "Какие методы оплаты поддержваются?", "id": 2, "dt": "2011-01-01"},
 	{"direction": "incoming", "from": "service1@ha.com", "to": "me@ha.com", "text": "Пока только вебмани", "id": 2, "dt": "2011-01-01"},
 	{"direction": "outgoing", "from": "me@ha.com", "to": "service1@ha.com", "text": "Ясно, спасибо", "id": 3, "dt": "2011-01-01"},
-	{"direction": "incoming", "from": "service1@ha.com", "to": "me@ha.com", "text": "Обращайтесь!", "id": 4, "dt": "2011-01-01"},
+	{"direction": "incoming", "from": "service1@ha.com", "to": "me@ha.com", "text": "Обращайтесь!", "id": 4, "dt": "2011-01-01"}
 ]

@@ -2,7 +2,15 @@ $.Model('Jschat.Models.Message',
 /* @Static */
 {
 	myjid: '',
-	findAll: "fixtures/messages.json.get",
+	findAll: function(params, success, error){
+	    return $.ajax({
+          url: 'fixtures/messages.json.get',
+	      type: 'get',
+	      dataType: 'json',
+	      data: params,
+	      success: success,
+	      error: error});
+	},
 	create: function(attrs, success){
 		// TODO: publish message to XMPP server?
 		success(attrs);

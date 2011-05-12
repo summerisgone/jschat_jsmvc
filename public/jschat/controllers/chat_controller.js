@@ -76,7 +76,7 @@ $.Controller('Jschat.Controllers.Chat',
 			});
 		msg.send(this.connection).save();
 	},
-	list: function(messages){
+	'list': function(messages){
 		this.element.html(this.view('init', this.options));
 	},
 	'message.created subscribe': function(called, message){

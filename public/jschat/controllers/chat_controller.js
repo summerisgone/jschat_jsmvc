@@ -54,10 +54,28 @@ $.Controller('Jschat.Controllers.Chat',
 		});
 		this.connection.send($pres());
 	},
-	onPresence: function(){
-		steal.dev.log('On presence');
-//		this.connection.disconnect();
-	},
+	onPresence: function(presence){
+        var ptype = $(presence).attr('type'),
+        	from = $(presence).attr('from'),
+        	contact = this.options.roster.getByJid(from);
+        if (contact){
+        	if (ptype === 'subscribe') {
+        		// Ignore subscription requests on client
+        	} else if (ptype !== 'error') {
+        		if (ptype === 'unavailable') {
+        			contact.status = 'offline';
+        		} else {
+        			var show = $(presence).find("show");
+        			if (show.length || show.text() === "chat") {
+        				contact.status = 'available';
+        			} else {
+        				contact.status = 'away';
+        			}
+        		}
+        	}
+        }
+        return true;
+    },
 	OnMessage: function(message){
 		steal.dev.log('On message');
 		var Message = Jschat.Models.Message, // shortcut

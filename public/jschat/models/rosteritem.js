@@ -50,12 +50,21 @@ $.Model('Jschat.Models.Rosteritem',
 $.Model.List('Jschat.Models.Roster', 
 /* @Static */
 {
-    
 }, 
 /* @Prototype */
 {
 	online: function(){
 		return this.match({status: 'available'});
-	} 
-    
+	},
+	getByJid: function(jid){
+		var index = undefined;
+		this.each(function(i, contact){
+			if (Strophe.getBareJidFromJid(contact.jid) === Strophe.getBareJidFromJid(jid)) {
+				index = i;
+			}
+		});
+		if (index !== undefined) {
+			return this[index];
+		}
+	}
 });

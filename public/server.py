@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import SimpleHTTPServer
 import SocketServer
 import shutil

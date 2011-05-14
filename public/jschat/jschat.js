@@ -25,10 +25,13 @@ steal.plugins(
 	'strophe',
 	'base64',
 	'md5',
-	'flXHR',
-	'checkplayer',
-	'swfobject',
-	'flensed'
+	'xml2json',
+	'underscore'
+	// uncomment these files to build
+//	'flXHR',
+//	'checkplayer',
+//	'swfobject',
+//	'flensed'
 )
 .views(
 	'//jschat/views/chat/init.ejs',

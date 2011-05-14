@@ -1,2 +1,7 @@
 .settings
 .project
+public/jschat/docs/
+public/jschat/docs.html
+public/jschat/production.js
+public/twistd.log*
+public/twistd.pid

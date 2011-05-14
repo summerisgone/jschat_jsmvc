@@ -7,3 +7,6 @@
 [submodule "public/strophe"]
 	path = public/strophe
 	url = git://github.com/metajack/strophejs.git
+[submodule "public/documentjs"]
+	path = public/documentjs
+	url = git://github.com/jupiterjs/documentjs.git

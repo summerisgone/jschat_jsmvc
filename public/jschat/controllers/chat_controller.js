@@ -24,9 +24,13 @@ $.Controller('Jschat.Controllers.Chat',
 		this.options.messages.findAll({}, this.callback('list'));
 		this.connection = new Strophe.Connection(this.options.bosh_service);
 		this.connection.connect(this.options.jid, this.options.password, this.callback('onConnectChange'));
-		this.connection.rawInput = function(data){console.log('IN:', $(data));}
-		this.connection.rawOutput = function(data){console.log('OUT:', $(data));}
+		this.connection.rawInput = function(data){console.log('IN:', $(data));};
+		this.connection.rawOutput = function(data){console.log('OUT:', $(data));};
 		this.bind('connected', 'onConnect');
+	},
+	unload: function(){
+		this.connection.send($pres({type: 'unavailable'}));
+		this.connection.disconnect();
 	},
 	onConnectChange: function(status_code, error){
 		for (status in Strophe.Status) {

@@ -1,3 +1,13 @@
+/*
+ * @page jschat jschat
+ * @tag home
+ *
+ *	XMPP chat application
+ *
+ *	Documentaion comes here
+ *
+ * 
+ * */
 steal.plugins(
 	'jquery/controller',			// a widget factory
 	'jquery/controller/subscribe',	// subscribe to OpenAjax.hub
@@ -40,4 +50,8 @@ steal.plugins(
 		});
 	}
 //		new Jschat.Models.Message({mesage: 'New one'}).save();
+	$(window).unload(function(ev) {
+		  $('#chat').trigger('unload');
+		  alert('Handler for .unload() called.');
+	});
 });

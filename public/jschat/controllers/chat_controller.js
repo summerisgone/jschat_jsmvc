@@ -44,35 +44,23 @@ $.Controller('Jschat.Controllers.Chat',
 		var iq = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
 		this.connection.sendIQ(iq, this.callback('onRoster'));
 		// add handlers
-		this.connection.addHandler(this.callback('onPresence'), null, 'presence');
+		this.connection.addHandler(this.callback('onContactPresence'), 'jabber:client', 'presence');
 		this.connection.addHandler(this.callback('OnMessage'), null, 'message', 'chat');
 	},
-	onRoster: function(iq){
+	onRoster: function(roster){
 		var Rosteritem = Jschat.Models.Rosteritem;  // shortcut
-		$(iq).find('item').each(function() {
-			new Rosteritem(Rosteritem.fromIQ(this)).save(); // TODO: Listen roster item creation and add it to the list 
+		$(roster).find('item').each(function() {
+			new Rosteritem(Rosteritem.fromIQ(this)).save();
 		});
 		this.connection.send($pres());
 	},
-	onPresence: function(presence){
-        var ptype = $(presence).attr('type'),
-        	from = $(presence).attr('from'),
-        	contact = this.options.roster.getByJid(from);
+	/**
+	 * Listen only 'jabber:client' namespace
+	 */
+	onContactPresence: function(presence){
+        var contact = this.options.roster.getByJid($(presence).attr('from'));
         if (contact){
-        	if (ptype === 'subscribe') {
-        		// Ignore subscription requests on client
-        	} else if (ptype !== 'error') {
-        		if (ptype === 'unavailable') {
-        			contact.status = 'offline';
-        		} else {
-        			var show = $(presence).find("show");
-        			if (show.length || show.text() === "chat") {
-        				contact.status = 'available';
-        			} else {
-        				contact.status = 'away';
-        			}
-        		}
-        	}
+        	contact.updatePrecense(presence);
         }
         return true;
     },

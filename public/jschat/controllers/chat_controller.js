@@ -12,18 +12,19 @@ $.Controller('Jschat.Controllers.Chat',
 		roster: new Jschat.Models.Roster(),
 		jid: 'jschat-demo@jabber.org',
 		password: 'password',
-		bosh_service: 'http://bosh.metajack.im:5280/xmpp-httpbind'
-//		bosh_service: 'http://localhost:5280/http-bind'
+//		bosh_service: 'http://bosh.metajack.im:5280/xmpp-httpbind'
+		bosh_service: 'http://localhost:5280/bosh'
 	}
+
 },
 /* @Prototype */
 {
-	// set up the widget
+	// set up connection
 	init : function(){
 		// fills this list of items (creates add events on the list)
-		this.options.messages.findAll({}, this.callback('list'));
+//		this.options.messages.findAll({}, this.callback('list'));
 		this.connection = new Strophe.Connection(this.options.bosh_service);
-		this.connection.connect(this.options.jid, this.options.password, this.callback('onConnectChange'));
+//		this.connection.connect(this.options.jid, this.options.password, this.callback('onConnectChange'));
 		this.connection.rawInput = function(data){console.log('IN:', $(data));};
 		this.connection.rawOutput = function(data){console.log('OUT:', $(data));};
 		this.bind('connected', 'onConnect');
@@ -70,34 +71,16 @@ $.Controller('Jschat.Controllers.Chat',
         return true;
     },
 	OnMessage: function(message){
-		steal.dev.log('On message');
 		var Message = Jschat.Models.Message, // shortcut
 			message = new Message(Message.fromIQ(message));
 		message.myjid = this.options.jid;
 		message.save();
 		return true;
 	},
-	'form submit': function(el, ev){
-		ev.preventDefault();
-		// TODO: get appripriate contact, not first one
-		var to = this.options.roster.manager,
-			msg = new Jschat.Models.Message({
-				'to': to.jid.fullJid,
-				'text': el.formParams().text
-			});
-		msg.send(this.connection).save();
-	},
-	'list': function(messages){
-		this.element.html(this.view('init', this.options));
-	},
 	'message.created subscribe': function(called, message){
 		this.options.messages.push(message);
 	},
 	'rosteritem.created subscribe': function(called, roster_item){
 		this.options.roster.push(roster_item);
-	},
-	'{messages} add': function(list, ev, new_messages){
-		this.element.find('.history ul').append(this.view('list', {messages: new_messages}));
 	}
-	
 });

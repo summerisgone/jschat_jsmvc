@@ -20,7 +20,10 @@ steal.plugins(
 	'message',
 	'rosteritem'
 )
-.controllers('chat')
+.controllers(
+	'chat',
+	'ui'
+)
 .resources(
 	'strophe',
 	'base64',
@@ -34,14 +37,14 @@ steal.plugins(
 //	'flensed'
 )
 .views(
-	'//jschat/views/chat/init.ejs',
-	'//jschat/views/chat/list.ejs',
-	'//jschat/views/chat/show.ejs'
+	'//jschat/views/chatui/init.ejs',
+	'//jschat/views/chatui/list.ejs',
+	'//jschat/views/chatui/show.ejs'
 )
 .then(function($){
 	var init = function($){
 		$('body').append('<div id="chat"/>');
-		$('#chat').jschat_chat();
+		$('#chat').jschat_chatui();
 	};
 
 	// wrap CORS browser support
@@ -52,7 +55,6 @@ steal.plugins(
 			init($);	
 		});
 	}
-//		new Jschat.Models.Message({mesage: 'New one'}).save();
 	$(window).unload(function(ev) {
 		  $('#chat').trigger('unload');
 		  alert('Handler for .unload() called.');

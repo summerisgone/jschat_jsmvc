@@ -69,8 +69,10 @@ $.Class.extend('Jschat.Jid',
 $.Model('Jschat.Models.Rosteritem',
 /* @Static */
 {
-	status: null,
-	online: false,
+	defaults: {
+		status: 'unavailable',
+		online: false,
+	},
 	/**
 	 * An empty method used to send OpenAjax signal 'create'
 	 */
@@ -174,7 +176,9 @@ $.Model.List('Jschat.Models.Roster',
 {}, 
 /* @Prototype */
 {
-	manager: null,
+	init: function(){
+		this.manager = null;
+	},
 	online: function(){
 		return _.select(this, function(rosterItem){
 			return rosterItem.online;

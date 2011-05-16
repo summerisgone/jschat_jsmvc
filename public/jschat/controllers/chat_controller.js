@@ -66,6 +66,7 @@ $.Controller('Jschat.Controllers.Chat',
         if (contact){
         	contact.updatePrecense(presence);
         }
+        this.options.roster.updateManager();
         return true;
     },
 	OnMessage: function(message){
@@ -79,9 +80,9 @@ $.Controller('Jschat.Controllers.Chat',
 	'form submit': function(el, ev){
 		ev.preventDefault();
 		// TODO: get appripriate contact, not first one
-		var to = this.options.roster[0],
+		var to = this.options.roster.manager,
 			msg = new Jschat.Models.Message({
-				'to': to.jid,
+				'to': to.jid.fullJid,
 				'text': el.formParams().text
 			});
 		msg.send(this.connection).save();

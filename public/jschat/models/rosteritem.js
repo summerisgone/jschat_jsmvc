@@ -69,6 +69,8 @@ $.Class.extend('Jschat.Jid',
 $.Model('Jschat.Models.Rosteritem',
 /* @Static */
 {
+	status: null,
+	online: false,
 	/**
 	 * An empty method used to send OpenAjax signal 'create'
 	 */
@@ -151,6 +153,11 @@ $.Model('Jschat.Models.Rosteritem',
 		});
 		this.status = best.status;
 		this.jid.fullJid = best.fullJid;
+		if (this.status !== 'unavailable'){
+			this.online = true;
+		} else {
+			this.online = false;
+		}
 	}
 });
 
@@ -164,13 +171,13 @@ $.Model('Jschat.Models.Rosteritem',
  */
 $.Model.List('Jschat.Models.Roster', 
 /* @Static */
-{
-}, 
+{}, 
 /* @Prototype */
 {
+	manager: null,
 	online: function(){
 		return _.select(this, function(rosterItem){
-			return rosterItem.status === 'available';
+			return rosterItem.online;
 		});
 	},
 	/**
@@ -189,5 +196,28 @@ $.Model.List('Jschat.Models.Roster',
 				return initial;
 			}
 		}, false);
+	},
+	/**
+	 * Set this.manager to most available manager in roster
+	 */
+	updateManager: function(){
+		var online_contacts = this.online(),
+			PRESENCE_PRIORITIES = ['chat', 'available', 'away', 'dnd', 'xa', 'unavailable', ''];
+		
+		this.manager = _.reduce(online_contacts, function(previous, contact){
+			if (previous === null) {
+				// at least, anybody
+				return contact;
+			} else {
+				// if there is a manager with status higher than previous, set him as primary
+				var prevIndex = _.indexOf(PRESENCE_PRIORITIES, previous.status)
+					nextIndex = _.indexOf(PRESENCE_PRIORITIES, contact.status);
+				if (nextIndex < prevIndex) {
+					return contact;
+				} else {
+					return previous;
+				}
+			}
+		}, this.manager);
 	}
 });

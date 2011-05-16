@@ -1,0 +1,87 @@
+.jschat_chatui {
+    font-family: sans, verdana;
+    font-size: 16px;
+}
+
+.loading {
+    margin: auto;
+    position: absolute;
+    top: 50%;
+    width: 200px;
+    border: 1px solid #B2B5CB;
+    padding: 3px 10px 3px 25px;
+    background: url('/jschat/resources/loading.gif') 5px center no-repeat;
+}
+
+.chat-window {
+    border: 1px solid #B2B5CB;
+    width: 300px;
+    
+    .window-header {
+        background:  #AAABC8;
+        color: #EEE;
+        text-align: center;
+        font-weight: bold;
+        padding: 2px 5px;
+    }
+    
+    .history {
+        overflow-y: scroll;
+        overflow-x: none;
+        height: 500px;
+    }
+    
+    .history ul,.history ul li {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+    
+    .history ul li {
+        padding: 3px 2px;
+    }
+    
+    .message {
+        border-top: 1px solid #B2B5CB;
+        
+        textarea {
+            border: 1px solid #B2B5CB;
+            width: 248px;
+            color: #666;
+        }
+        
+        textarea.focus {
+            border: 1px solid #B2B5CB;
+            background: #D9EFFF;
+            color: #222;
+        }
+        
+        input {
+            float: right;
+            padding: 20px 10px;
+            max-width: 50px;
+        }
+    }
+}
+
+
+.clearfix:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+ 
+.clearfix {
+    display: inline-block;
+}
+ 
+html[xmlns] .clearfix {
+    display: block;
+}
+ 
+* html .clearfix {
+    height: 1%;
+}

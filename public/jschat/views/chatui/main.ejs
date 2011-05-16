@@ -1,13 +1,13 @@
-<div class="window">
+<div class="chat-window">
 	<div class="window-header">Chat window</div>
 	<div class="history">
 		<ul>
 		<%= $.View('//jschat/views/chatui/list',{messages: messages})%>
 		</ul>
 	</div>
-	<div class="message">
+	<div class="message clearfix">
 	   <form action="" method="post">
-	       <textarea name="text">Type your message here</textarea>
+	       <textarea name="text"><%= blank_message %></textarea>
 	       <input type="submit" />
 	   </form>
 	</div>

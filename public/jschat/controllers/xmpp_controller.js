@@ -24,10 +24,11 @@ $.Controller('Jschat.Controllers.Chat',
 		// fills this list of items (creates add events on the list)
 //		this.options.messages.findAll({}, this.callback('list'));
 		this.connection = new Strophe.Connection(this.options.bosh_service);
-//		this.connection.connect(this.options.jid, this.options.password, this.callback('onConnectChange'));
+		this.connection.connect(this.options.jid, this.options.password, this.callback('onConnectChange'));
 		this.connection.rawInput = function(data){console.log('IN:', $(data));};
 		this.connection.rawOutput = function(data){console.log('OUT:', $(data));};
 		this.bind('connected', 'onConnect');
+		this.element.trigger('ui.connect');
 	},
 	unload: function(){
 		this.connection.send($pres({type: 'unavailable'}));
@@ -48,6 +49,7 @@ $.Controller('Jschat.Controllers.Chat',
 		// request roster
 		var iq = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
 		this.connection.sendIQ(iq, this.callback('onRoster'));
+		this.element.trigger('ui.roster');
 		// add handlers
 		this.connection.addHandler(this.callback('onContactPresence'), 'jabber:client', 'presence');
 		this.connection.addHandler(this.callback('OnMessage'), null, 'message', 'chat');
@@ -58,6 +60,7 @@ $.Controller('Jschat.Controllers.Chat',
 			new Rosteritem(Rosteritem.fromIQ(this)).save();
 		});
 		this.connection.send($pres());
+		this.element.trigger('ui.ready');
 	},
 	/**
 	 * Listen only 'jabber:client' namespace
@@ -68,6 +71,7 @@ $.Controller('Jschat.Controllers.Chat',
         	contact.updatePrecense(presence);
         }
         this.options.roster.updateManager();
+        this.options.roster;
         return true;
     },
 	OnMessage: function(message){

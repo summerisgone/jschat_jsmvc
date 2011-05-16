@@ -15,13 +15,14 @@ steal.plugins(
 	'jquery/controller/view',		// lookup views with the controller's name
 	'jquery/model',					// Ajax wrappers
 	'jquery/model/list',			// List helpers
-	'jquery/dom/form_params')		// form data helper
+	'jquery/dom/form_params',		// form data helper
+	'steal/less')
 .models(
 	'message',
 	'rosteritem'
 )
 .controllers(
-	'chat',
+	'xmpp',
 	'ui'
 )
 .resources(
@@ -29,7 +30,8 @@ steal.plugins(
 	'base64',
 	'md5',
 	'xml2json',
-	'underscore'
+	'underscore',
+	'gravatar'
 	// uncomment these files to build
 //	'flXHR',
 //	'checkplayer',
@@ -42,6 +44,9 @@ steal.plugins(
 	'//jschat/views/chatui/show.ejs'
 )
 .then(function($){
+	// preprocess css
+	steal.less('css/style');
+	
 	var init = function($){
 		$('body').append('<div id="chat"/>');
 		$('#chat').jschat_chatui();

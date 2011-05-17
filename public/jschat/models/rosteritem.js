@@ -71,7 +71,7 @@ $.Model('Jschat.Models.Rosteritem',
 {
 	defaults: {
 		status: 'unavailable',
-		online: false,
+		online: false
 	},
 	/**
 	 * An empty method used to send OpenAjax signal 'create'

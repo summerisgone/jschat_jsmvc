@@ -9,7 +9,7 @@ Jschat.Controllers.Chat.extend('Jschat.Controllers.Chatui',
 {
 	defaults: {
 		blank_message: 'Type message here',
-		send_on_enter: true,
+		send_on_enter: true
 	}
 },
 /* @Prototype */

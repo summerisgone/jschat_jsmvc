@@ -39,7 +39,8 @@ steal.plugins(
 //	'flensed'
 )
 .views(
-	'//jschat/views/chatui/init.ejs',
+	'//jschat/views/chatui/main.ejs',
+	'//jschat/views/chatui/loading.ejs',
 	'//jschat/views/chatui/list.ejs',
 	'//jschat/views/chatui/show.ejs'
 )

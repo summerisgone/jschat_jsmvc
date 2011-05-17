@@ -3,13 +3,8 @@ $.Model('Jschat.Models.Message',
 {
 	myjid: '',
 	findAll: function(params, success, error){
-	    return $.ajax({
-          url: 'fixtures/messages.json.get',
-	      type: 'get',
-	      dataType: 'json',
-	      data: params,
-	      success: success,
-	      error: error});
+		// empty
+	    return success([]);
 	},
 	create: function(attrs, success){
 		// TODO: publish message to XMPP server?
@@ -33,6 +28,7 @@ $.Model('Jschat.Models.Message',
 			text: $(message).text(),
 			from: Strophe.getBareJidFromJid($(message).attr('from')),
 			to: Strophe.getBareJidFromJid($(message).attr('to')),
+			hidden: false,
 			dt: new Date()
 		}
 	}
@@ -64,5 +60,10 @@ $.Model.List('Jschat.Models.Message.List',
 }, 
 /* @Prototype */
 {
-    
+	visible: function(){
+		return _.select(this, function(message){
+			return !!message.hidden;
+		});
+	},
+	
 });

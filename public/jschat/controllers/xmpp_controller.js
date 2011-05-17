@@ -12,10 +12,10 @@ $.Controller('Jschat.Controllers.Chat',
 		roster: new Jschat.Models.Roster(),
 		jid: 'jschat-demo@jabber.org',
 		password: 'password',
+		userinfo: jQuery.browser,
 //		bosh_service: 'http://bosh.metajack.im:5280/xmpp-httpbind'
 		bosh_service: 'http://localhost:5280/bosh'
 	}
-
 },
 /* @Prototype */
 {
@@ -70,9 +70,35 @@ $.Controller('Jschat.Controllers.Chat',
         if (contact){
         	contact.updatePrecense(presence);
         }
-        this.options.roster.updateManager();
+        if (this.options.messages.length == 0){
+        	this.options.roster.updateManager();
+        	console.log('manager cb');
+        	_.delay(function(self){
+        		console.log('delayed cb', self);
+        		self.sendWelcome();
+        	}, '2000', this);
+        }
         this.options.roster;
         return true;
+    },
+    /**
+     * Send welcome message to current manager
+     * 
+     */
+    sendWelcome: function(){
+    	if (!this.welcomeSent) {
+    		var userinfo = $.View('//jschat/views/userinfo', {info: this.options.userinfo}),
+    		msg = new Jschat.Models.Message({
+    			text: userinfo,
+    			from: this.options.jid,
+    			to: this.options.roster.manager.jid.fullJid,
+    			hidden: true,
+    			dt: new Date()
+    		});
+    		msg.send(this.connection).save();
+    		console.log(msg, 'Sent');
+    	}
+    	this.welcomeSent = true;
     },
 	OnMessage: function(message){
 		var Message = Jschat.Models.Message, // shortcut

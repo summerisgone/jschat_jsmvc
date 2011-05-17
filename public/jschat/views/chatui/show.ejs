@@ -1,3 +1,5 @@
-<li>
-<span><%= message.text %></span>
-</li>
+<% if (!message.hidden) { %>
+	<li>
+	<span><%= message.text %></span>
+	</li>
+<% } %>

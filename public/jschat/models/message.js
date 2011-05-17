@@ -39,9 +39,9 @@ $.Model('Jschat.Models.Message',
 		var to = Strophe.getBareJidFromJid(this.to),
 			myjid = Strophe.getBareJidFromJid(this.myjid);
 		if (myjid === to) {
-			return 'outgoing';
-		} else {
 			return 'incoming';
+		} else {
+			return 'outgoing';
 		}
 	},
 	send: function(connection){

@@ -1,5 +1,12 @@
 <% if (!message.hidden) { %>
-	<li>
-	<span><%= message.text %></span>
+	<li class="message <%= message.direction() %>">
+	   <div class="from">
+	   <% if (message.direction() === 'outgoing') { %>
+	       you
+	   <% } else { %>
+	       <%= message.contact.jid.name %>
+	   <% } %>
+	   </div>
+	   <span><%= message.text %></span>
 	</li>
 <% } %>

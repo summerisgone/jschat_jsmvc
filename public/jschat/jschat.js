@@ -65,6 +65,5 @@ steal.plugins(
 	}
 	$(window).unload(function(ev) {
 		  $('#chat').trigger('unload');
-		  alert('Handler for .unload() called.');
 	});
 });

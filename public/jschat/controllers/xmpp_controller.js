@@ -101,6 +101,7 @@ $.Controller('Jschat.Controllers.Chat',
 		var Message = Jschat.Models.Message, // shortcut
 			message = new Message(Message.fromIQ(message));
 		message.myjid = this.options.jid;
+		message.contact = this.options.roster.getByJid(message.from);
 		message.save();
 		return true;
 	},

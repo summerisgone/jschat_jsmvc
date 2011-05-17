@@ -25,8 +25,8 @@ $.Controller('Jschat.Controllers.Chat',
 //		this.options.messages.findAll({}, this.callback('list'));
 		this.connection = new Strophe.Connection(this.options.bosh_service);
 		this.connection.connect(this.options.jid, this.options.password, this.callback('onConnectChange'));
-		this.connection.rawInput = function(data){console.log('IN:', $(data));};
-		this.connection.rawOutput = function(data){console.log('OUT:', $(data));};
+//		this.connection.rawInput = function(data){console.log('IN:', $(data));};
+//		this.connection.rawOutput = function(data){console.log('OUT:', $(data));};
 		this.bind('connected', 'onConnect');
 		this.element.trigger('ui.connect');
 	},
@@ -72,9 +72,7 @@ $.Controller('Jschat.Controllers.Chat',
         }
         if (this.options.messages.length == 0){
         	this.options.roster.updateManager();
-        	console.log('manager cb');
         	_.delay(function(self){
-        		console.log('delayed cb', self);
         		self.sendWelcome();
         	}, '2000', this);
         }
@@ -96,7 +94,6 @@ $.Controller('Jschat.Controllers.Chat',
     			dt: new Date()
     		});
     		msg.send(this.connection).save();
-    		console.log(msg, 'Sent');
     	}
     	this.welcomeSent = true;
     },

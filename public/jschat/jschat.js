@@ -27,18 +27,20 @@ steal.plugins(
 )
 .resources(
 	'strophe',
+	'strophe.flxhr',
 	'base64',
 	'md5',
 	'xml2json',
 	'underscore',
-	'gravatar'
+	'gravatar',
 	// uncomment these files to build
-//	'flXHR',
-//	'checkplayer',
-//	'swfobject',
-//	'flensed'
+	'flXHR',
+	'checkplayer',
+	'swfobject',
+	'flensed'
 )
 .views(
+	'//jschat/views/userinfo.ejs',
 	'//jschat/views/chatui/main.ejs',
 	'//jschat/views/chatui/loading.ejs',
 	'//jschat/views/chatui/list.ejs',

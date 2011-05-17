@@ -60,10 +60,5 @@ $.Model.List('Jschat.Models.Message.List',
 }, 
 /* @Prototype */
 {
-	visible: function(){
-		return _.select(this, function(message){
-			return !!message.hidden;
-		});
-	},
-	
+
 });

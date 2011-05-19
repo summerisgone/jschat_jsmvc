@@ -48,6 +48,18 @@ with ``.controller()`` method: ::
 5. Application use `CORS`_ cross-domain technology to access jabber http-bind server.
 If CORS not supported, connection established via `flXHR`_ Flash tool.
 
+6. For now a bit of work made to automate chat process. First of all, JSChat listen 
+XMPP presence stanzas and set appropriate resource for each contact in roster. For example, 
+if you have a buddy connected from the desktop and mobile, and he went away from 
+desktop, application will recieve presence stanza and send all conversations to the mobile.
+
+Manager to chat with is selected from roster. Application select most available 
+(by XMPP status) buddy. Since the conversation with manager has started, client will
+chat with only selected manager, even if he went away.
+
+7. I think it's time to publish some usage docs and API and save all this words 
+for history.
+ 
 Libraries and technologies
 ---------------------------
 

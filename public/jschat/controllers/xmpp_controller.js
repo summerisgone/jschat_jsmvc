@@ -41,7 +41,8 @@ $.Controller('Jschat.Controllers.Chat',
 	 */
 	sendMessage: function(text){
 		if (this.options.roster.manager.jid.fullJid) {
-			if (typeof(text) === 'String'){
+			this.options.roster.managerSet = true;
+			if (typeof(text) === 'string'){
 				var msg = new Jschat.Models.Message({
 					text: text,
 					from: this.options.jid,
@@ -59,20 +60,19 @@ $.Controller('Jschat.Controllers.Chat',
      * @attr userinfo - Object to render in initial message
      */
     sendWelcome: function(userinfo){
-    	$.extend(this.options.userinfo, userinfo);
-    	if (!this.welcomeSent) {
-    		var userinfo = $.View('//jschat/views/userinfo', {info: this.options.userinfo}),
-    		msg = new Jschat.Models.Message({
+    	if (!this._welcomeSent) {
+    		$.extend(this.options.userinfo, userinfo);
+    		var userinfo = $.View('//jschat/views/userinfo', {info: this.options.userinfo});
+    		this.sendMessage({
     			text: userinfo,
     			from: this.options.jid,
     			to: this.options.roster.manager.jid.fullJid,
     			hidden: true,
     			dt: new Date()
     		});
-    		msg.send(this.connection).save();
     		this.element.trigger('xmpp.start_conversation');
+    		this._welcomeSent = true;
     	}
-    	this.welcomeSent = true;
     },
 	unload: function(){
 		this.connection.send($pres({type: 'unavailable'}));
@@ -88,7 +88,6 @@ $.Controller('Jschat.Controllers.Chat',
 		}
 	},
 	onConnect: function(){
-		steal.dev.log('on connect');
 		// 'connected' event listener
 		// request roster
 		var iq = $iq({type: 'get'}).c('query', {xmlns: 'jabber:iq:roster'});
@@ -114,15 +113,15 @@ $.Controller('Jschat.Controllers.Chat',
         var contact = this.options.roster.getByJid($(presence).attr('from'));
         if (contact){
         	contact.updatePrecense(presence);
-        	this.element.trigger('xmpp.ready_to_chat');
         }
-        if ((!this.welcomeSent) && (this.options.autoChat)){
+        if(!this._welcomeSent){
         	this.options.roster.updateManager();
+        }
+        if(this.options.autoChat){
         	_.delay(function(self){
         		self.sendWelcome();
         	}, '2000', this);
         }
-        this.options.roster;
         return true;
     },
 	onMessage: function(message){
@@ -131,11 +130,11 @@ $.Controller('Jschat.Controllers.Chat',
 		message.myjid = this.options.jid;
 		message.contact = this.options.roster.getByJid(message.from);
 		message.save();
-		this.element.triger('xmpp.message', message);
 		return true;
 	},
 	'message.created subscribe': function(called, message){
 		this.options.messages.push(message);
+		this.element.trigger('xmpp.message', message);
 	},
 	'rosteritem.created subscribe': function(called, roster_item){
 		this.options.roster.push(roster_item);

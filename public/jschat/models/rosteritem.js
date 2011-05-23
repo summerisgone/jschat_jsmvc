@@ -178,6 +178,8 @@ $.Model.List('Jschat.Models.Roster',
 {
 	init: function(){
 		this.manager = null;
+		// Since manager set, this.manager value should never be changed
+		this.managerSet = false;
 	},
 	online: function(){
 		return _.select(this, function(rosterItem){
@@ -205,10 +207,11 @@ $.Model.List('Jschat.Models.Roster',
 	 * Set this.manager to most available manager in roster
 	 */
 	updateManager: function(){
-		var online_contacts = this.online(),
-			PRESENCE_PRIORITIES = ['chat', 'available', 'away', 'dnd', 'xa', 'unavailable', ''];
-		
-		this.manager = _.reduce(online_contacts, function(previous, contact){
+		if (this.managerSet) {
+			return this.manager;
+		}
+		var PRESENCE_PRIORITIES = ['chat', 'available', 'away', 'dnd', 'xa', 'unavailable', ''];
+		this.manager = _.reduce(this, function(previous, contact){
 			if (previous === null) {
 				// at least, anybody
 				return contact;

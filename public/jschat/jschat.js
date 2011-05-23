@@ -49,21 +49,8 @@ steal.plugins(
 .then(function($){
 	// preprocess css
 	steal.less('css/style');
-	
-	var init = function($){
-		$('body').append('<div id="chat"/>');
-		$('#chat').jschat_chatui();
-	};
-
 	// wrap CORS browser support
-	if ('withCredentials' in new XMLHttpRequest()){
-		init($);
-	} else {
-		steal.resources('strophe.flxhr.js').then(function($){
-			init($);	
-		});
+	if (!('withCredentials' in new XMLHttpRequest())) {
+		steal.resources('strophe.flxhr.js');
 	}
-	$(window).unload(function(ev) {
-		  $('#chat').trigger('unload');
-	});
 });

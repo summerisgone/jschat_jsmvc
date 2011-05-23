@@ -13,6 +13,8 @@ $.Controller('Jschat.Controllers.Chat',
 		jid: 'jschat-demo@jabber.org',
 		password: 'password',
 		userinfo: jQuery.browser,
+		autoChat: false,
+		autoConnect: true,
 //		bosh_service: 'http://bosh.metajack.im:5280/xmpp-httpbind'
 		bosh_service: 'http://localhost:5280/bosh'
 	}
@@ -21,15 +23,57 @@ $.Controller('Jschat.Controllers.Chat',
 {
 	// set up connection
 	init : function(){
-		// fills this list of items (creates add events on the list)
-//		this.options.messages.findAll({}, this.callback('list'));
 		this.connection = new Strophe.Connection(this.options.bosh_service);
-		this.connection.connect(this.options.jid, this.options.password, this.callback('onConnectChange'));
 //		this.connection.rawInput = function(data){console.log('IN:', $(data));};
 //		this.connection.rawOutput = function(data){console.log('OUT:', $(data));};
 		this.bind('connected', 'onConnect');
+		if (this.options.autoConnect){
+			this.connect();
+		}
+	},
+	connect: function(){
+		this.connection.connect(this.options.jid, this.options.password, this.callback('onConnectChange'));
 		this.element.trigger('ui.connect');
 	},
+	/**
+	 * Send message to current manager
+	 * @param text - message text or object to initialize
+	 */
+	sendMessage: function(text){
+		if (this.options.roster.manager.jid.fullJid) {
+			if (typeof(text) === 'String'){
+				var msg = new Jschat.Models.Message({
+					text: text,
+					from: this.options.jid,
+					to: this.options.roster.manager.jid.fullJid,
+					dt: new Date()
+				});
+			} else {
+				var msg = new Jschat.Models.Message(text);
+			}
+			msg.send(this.connection).save();
+		}
+	},
+    /**
+     * Send welcome message to current manager
+     * @attr userinfo - Object to render in initial message
+     */
+    sendWelcome: function(userinfo){
+    	$.extend(this.options.userinfo, userinfo);
+    	if (!this.welcomeSent) {
+    		var userinfo = $.View('//jschat/views/userinfo', {info: this.options.userinfo}),
+    		msg = new Jschat.Models.Message({
+    			text: userinfo,
+    			from: this.options.jid,
+    			to: this.options.roster.manager.jid.fullJid,
+    			hidden: true,
+    			dt: new Date()
+    		});
+    		msg.send(this.connection).save();
+    		this.element.trigger('xmpp.start_conversation');
+    	}
+    	this.welcomeSent = true;
+    },
 	unload: function(){
 		this.connection.send($pres({type: 'unavailable'}));
 		this.connection.disconnect();
@@ -52,7 +96,7 @@ $.Controller('Jschat.Controllers.Chat',
 		this.element.trigger('ui.roster');
 		// add handlers
 		this.connection.addHandler(this.callback('onContactPresence'), 'jabber:client', 'presence');
-		this.connection.addHandler(this.callback('OnMessage'), null, 'message', 'chat');
+		this.connection.addHandler(this.callback('onMessage'), 'jabber:client', 'message', 'chat');
 	},
 	onRoster: function(roster){
 		var Rosteritem = Jschat.Models.Rosteritem;  // shortcut
@@ -60,6 +104,7 @@ $.Controller('Jschat.Controllers.Chat',
 			new Rosteritem(Rosteritem.fromIQ(this)).save();
 		});
 		this.connection.send($pres());
+		this.options.roster.updateManager();
 		this.element.trigger('ui.ready');
 	},
 	/**
@@ -69,8 +114,9 @@ $.Controller('Jschat.Controllers.Chat',
         var contact = this.options.roster.getByJid($(presence).attr('from'));
         if (contact){
         	contact.updatePrecense(presence);
+        	this.element.trigger('xmpp.ready_to_chat');
         }
-        if (this.options.messages.length == 0){
+        if ((!this.welcomeSent) && (this.options.autoChat)){
         	this.options.roster.updateManager();
         	_.delay(function(self){
         		self.sendWelcome();
@@ -79,30 +125,13 @@ $.Controller('Jschat.Controllers.Chat',
         this.options.roster;
         return true;
     },
-    /**
-     * Send welcome message to current manager
-     * 
-     */
-    sendWelcome: function(){
-    	if (!this.welcomeSent) {
-    		var userinfo = $.View('//jschat/views/userinfo', {info: this.options.userinfo}),
-    		msg = new Jschat.Models.Message({
-    			text: userinfo,
-    			from: this.options.jid,
-    			to: this.options.roster.manager.jid.fullJid,
-    			hidden: true,
-    			dt: new Date()
-    		});
-    		msg.send(this.connection).save();
-    	}
-    	this.welcomeSent = true;
-    },
-	OnMessage: function(message){
+	onMessage: function(message){
 		var Message = Jschat.Models.Message, // shortcut
 			message = new Message(Message.fromIQ(message));
 		message.myjid = this.options.jid;
 		message.contact = this.options.roster.getByJid(message.from);
 		message.save();
+		this.element.triger('xmpp.message', message);
 		return true;
 	},
 	'message.created subscribe': function(called, message){

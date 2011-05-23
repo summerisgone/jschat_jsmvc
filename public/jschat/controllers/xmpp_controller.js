@@ -1,7 +1,7 @@
 /**
  *  @class Jschat.Controllers.Chat Widget for chat
  *
- *  $('#chat').Jschat_chat({list: new Message.List()});
+ *  $('#chat').Jschat_chat(options);
  *
  */
 $.Controller('Jschat.Controllers.Chat',

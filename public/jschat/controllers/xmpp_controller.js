@@ -95,7 +95,7 @@ $.Controller('Jschat.Controllers.Chat',
 		this.element.trigger('ui.roster');
 		// add handlers
 		this.connection.addHandler(this.callback('onContactPresence'), 'jabber:client', 'presence');
-		this.connection.addHandler(this.callback('onMessage'), 'jabber:client', 'message', 'chat');
+		this.connection.addHandler(this.callback('onMessage'), null, 'message', 'chat');
 	},
 	onRoster: function(roster){
 		var Rosteritem = Jschat.Models.Rosteritem;  // shortcut

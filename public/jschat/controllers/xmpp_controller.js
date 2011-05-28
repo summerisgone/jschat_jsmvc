@@ -24,8 +24,6 @@ $.Controller('Jschat.Controllers.Chat',
 	// set up connection
 	init : function(){
 		this.connection = new Strophe.Connection(this.options.bosh_service);
-//		this.connection.rawInput = function(data){console.log('IN:', $(data));};
-//		this.connection.rawOutput = function(data){console.log('OUT:', $(data));};
 		this.bind('connected', 'onConnect');
 		if (this.options.autoConnect){
 			this.connect();

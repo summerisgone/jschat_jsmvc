@@ -16,7 +16,8 @@ steal.plugins(
 	'jquery/model',					// Ajax wrappers
 	'jquery/model/list',			// List helpers
 	'jquery/dom/form_params',		// form data helper
-	'steal/less')
+	'steal/less'
+)
 .models(
 	'message',
 	'rosteritem'
@@ -33,7 +34,6 @@ steal.plugins(
 	'xml2json',
 	'underscore',
 	'gravatar',
-	// uncomment these files to build
 	'flXHR',
 	'checkplayer',
 	'swfobject',
@@ -41,16 +41,13 @@ steal.plugins(
 )
 .views(
 	'//jschat/views/userinfo.ejs',
-	'//jschat/views/chatui/main.ejs',
-	'//jschat/views/chatui/loading.ejs',
-	'//jschat/views/chatui/list.ejs',
-	'//jschat/views/chatui/show.ejs'
+	'//jschat/views/ui/main.ejs',
+	'//jschat/views/ui/loading.ejs',
+	'//jschat/views/ui/list.ejs',
+	'//jschat/views/ui/show.ejs'
 )
 .then(function($){
-	// preprocess css
-	steal.less('css/style');
-	// wrap CORS browser support
-	if (!('withCredentials' in new XMLHttpRequest())) {
-		steal.resources('strophe.flxhr.js');
+	if (steal.options.env === 'development') {
+		steal.less('css/style');
 	}
 });

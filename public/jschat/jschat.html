@@ -7,11 +7,11 @@
 		<script type='text/javascript' src='../steal/steal.js?jschat,development'></script>
 		<script type="text/javascript">
 $(function(){
-		$('body').append('<div id="chat"/>');
-		$('#chat').demochat()
-		.unload(function(ev) {
-		    $('#chat').trigger('unload');
-	    });
+	$('body').append('<div id="chat"/>');
+	$('#chat').demochat();
+	$(document).unload(function(){
+	    $('#chat').trigger('unload');
+	});
 });
         </script>
         

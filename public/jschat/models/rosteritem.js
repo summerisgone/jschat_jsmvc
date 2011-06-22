@@ -108,20 +108,19 @@ $.Model('Jschat.Models.Rosteritem',
 	 * @param presence - a <presence> stanza
 	 */
 	updatePrecense: function(presence) {
-		var jsonPresence = $.xml2json(presence);
 		var status;
-		if (jsonPresence.type) {
-			status = jsonPresence.type;
+		if ($(presence).attr('type')) {
+			status = $(presence).attr('type');
 		} else {
-			if (jsonPresence.show) {
-				status = jsonPresence.show;
+			if ($(presence).find('show').length) {
+				status = $(presence).find('show').text();
 			} else {
 				status = 'available';
 			}
 		}
 		// try to find existing resource
 		var existingResource = _.select(this.resources, function(resource){
-			return resource.fullJid === jsonPresence.from; 
+			return resource.fullJid === $(presence).attr('from'); 
 		});
 		if(existingResource.length > 0){
 			_.each(existingResource, function(resource){
@@ -129,7 +128,7 @@ $.Model('Jschat.Models.Rosteritem',
 			});
 		} else {
 			this.resources.push({
-				fullJid: jsonPresence.from,
+				fullJid: $(presence).attr('from'),
 				status: status
 			});
 		}

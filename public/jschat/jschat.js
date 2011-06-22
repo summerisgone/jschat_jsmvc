@@ -31,7 +31,6 @@ steal.plugins(
 	'strophe.flxhr',
 	'base64',
 	'md5',
-	'xml2json',
 	'underscore',
 	'gravatar',
 	'flXHR',
